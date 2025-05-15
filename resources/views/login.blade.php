@@ -13,8 +13,7 @@
                     <!-- form -->
                     <div class="row justify-content-center">
                         <div class="col-md-10 col-12">
-                            <form action="/loginSubmit" method="post" novalidate> {{-- quando o novalidate está aqui nesse campo ele invalida todos os required do html--}}
-                                
+                            <form action="/loginSubmit" method="post" novalidate> {{-- quando oestá aqui nesse campo ele invalida todos os required do html--}}
                                 @csrf
                                     {{-- só CSRF -> ataque malicioso para roubar dados de autenticação 
                                     Token CSRF -> proteção contra esse tipo de ataque  --}}
@@ -38,6 +37,13 @@
                                     <button type="submit" class="btn btn-secondary w-100">LOGIN</button>
                                 </div>
                             </form>
+
+                            {{-- Invalid login --}} 
+                            @if(session('loginError'))
+                                <div class="alert alert-danger text-center">
+                                    {{ session('loginError') }}
+                                </div>
+                            @endif
                         </div>
                     </div>
 

@@ -37,16 +37,53 @@ class AuthController extends Controller
         $username = $request->input('text_username');
         $password = $request->input('text_password');
 
+        // check if user exists
+        $user = user::where('username',$username)
+                        ->where('deleted_at', NULL)
+                        ->first();
+        if(!$user){
+            return redirect()
+                    ->back()
+                    ->withInput()
+                    ->with('loginError','Nome de usuário ou senha incorretos!');
+        }
+
+        // check if password is correct
+        if(!password_verify($password, $user->password)){
+            return redirect()
+                    ->back()
+                    ->withInput()
+                    ->with('loginError','Nome de usuário ou senha incorretos!');
+        
+        }
+
+        // update last login
+        $user->last_login = date('Y-m-d H:i:s');
+        $user->save();
+
+        // login user mantendo ele na seção
+        session([
+            'user' => [
+                'id' => $user->id,
+                'username' => $user->username
+            ]
+        ]);
+
+        echo 'LOGIN EFETUADO COM SUCESSO';
+        //print_r($user);
+       
+
+
         // get all the users from the database
         //$users = User::all()-> toArray();
 
         // ou dá pra fazer pelo método abaixo 
-        //as an objetc instance of the model's class
-        $userModel = new User();
-        $users = $userModel-> all()->toArray();
+        //as an object instance of the model's class
+        // $userModel = new User();
+        // $users = $userModel-> all()->toArray();
 
-        echo '<pre>';
-        print_r($users);
+        // echo '<pre>';
+        // print_r($users);
 
         //echo 'ok';
 
@@ -76,7 +113,9 @@ class AuthController extends Controller
 
     public function logout ()
     {
-        echo "Logout";
+        // logout from the application
+        session()->forget('user');
+        return redirect()->to('/login');
     }
 }
  
