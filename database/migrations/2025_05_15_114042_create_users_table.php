@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id()->autoIncrement();//chave primaria
             $table->string('username', 50)->nullable();
-            $table->string('password', 20)->nullable();
+            $table->string('password')->nullable();
             $table->dateTime('last_login')->nullable();
             $table->timestamps();
             $table->softDeletes();
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('users'); //remoção da tabela fazendo um migration rollback 
     }
 };

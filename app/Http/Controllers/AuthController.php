@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -36,17 +37,28 @@ class AuthController extends Controller
         $username = $request->input('text_username');
         $password = $request->input('text_password');
 
+        // get all the users from the database
+        //$users = User::all()-> toArray();
+
+        // ou dá pra fazer pelo método abaixo 
+        //as an objetc instance of the model's class
+        $userModel = new User();
+        $users = $userModel-> all()->toArray();
+
+        echo '<pre>';
+        print_r($users);
+
         //echo 'ok';
 
         // test database connection
-        try{
-            DB::connection()->getPdo();// é o método que vai fazer o teste de conexão
-            echo 'Connection is OK!';
-        } catch (\PDOException $e){
-            echo "Connection failed: " . $e->getMessage();
-        }
+        // try{
+        //     DB::connection()->getPdo();// é o método que vai fazer o teste de conexão
+        //     echo 'Connection is OK!';
+        // } catch (\PDOException $e){
+        //     echo "Connection failed: " . $e->getMessage();
+        // }
 
-        echo "FIM!";
+        // echo "FIM!";
 
         //echo $request->input('text_username');
         //echo '<br>';
