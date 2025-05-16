@@ -19,6 +19,7 @@
                 </div>
             </div>
 
+            
             <!-- form -->
             <form action="{{ route('newNoteSubmit')}}" method="post">
                 @csrf 

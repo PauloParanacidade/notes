@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Crypt;
 
 use function Illuminate\Database\Eloquent\get;
 
+
 class MainController extends Controller
 {
     public function index()
