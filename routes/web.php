@@ -30,6 +30,14 @@ Route::middleware([CheckIsLogged::class])->group(function(){
     //e estas só serão executadas se houve um usuário logado
     Route::get('/',[MainController::class, 'index'])->name('home');
     Route::get('/newNote',[MainController::class, 'newNote'])->name('new');
+    Route::post('/newNoteSubmit', [MainController::class, 'newNoteSubmit'])->name('newNoteSubmit');
+
+    // edit note
+    Route::get('/editNote/{id}', [MainController::class, 'editNote'])->name('edit');
+
+    // delete note
+    Route::get('/deleteNote/{id}', [MainController::class, 'deleteNote'])->name('delete');
+
     Route::get('/logout',[AuthController::class, 'logout'])->name('logout');
 });
 
