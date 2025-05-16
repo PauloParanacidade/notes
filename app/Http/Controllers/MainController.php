@@ -14,16 +14,16 @@ class MainController extends Controller
     {
         // load user's notes
         $id = session('user.id');
-        $user = User::find($id)->toArray();
+        //$user = User::find($id)->toArray();
         $notes = User::find($id)->notes()->get()->toArray();
 
-        echo '<pre>';
-        print_r($user);
-        print_r($notes);
+        // echo '<pre>';
+        // print_r($user);
+        // print_r($notes);
+        // die();
 
-        die();
-
-        return view('home');
+        // show home view
+        return view('home',['notes' => $notes]);
         
         //echo "I'm inside the app!";
     }
