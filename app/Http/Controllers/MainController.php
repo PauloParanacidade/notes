@@ -6,9 +6,9 @@ use App\Models\Note;
 use App\Models\User;
 use App\Services\operations;
 use Dotenv\Parser\Value;
-use Illuminate\Contracts\Encryption\DecryptException;
+//use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Crypt;
+//use Illuminate\Support\Facades\Crypt;
 
 use function Illuminate\Database\Eloquent\get;
 
@@ -20,7 +20,11 @@ class MainController extends Controller
         // load user's notes
         $id = session('user.id');
         //$user = User::find($id)->toArray();
-        $notes = User::find($id)->notes()->get()->toArray();
+        $notes = User::find($id)
+                    ->notes()
+                    ->whereNull('deleted_at')
+                    ->get()
+                    ->toArray();
 
         // echo '<pre>';
         // print_r($user);
@@ -140,8 +144,33 @@ class MainController extends Controller
     public function deleteNote($id)
     {
         //$id = $this->decryptId($id);
+        //echo "I'm deleting note with id = $id";
+
         $id = operations::decryptId($id);
-        echo "I'm deleting note with id = $id";
+
+        // load note
+        $note = Note::find($id);
+
+        // show delete note confirmation
+        return view('delete_note',['note' => $note]);
+    }
+
+    public function deleteNoteConfirm($id)
+    {
+        // check if $id is encrypted
+        $id = operations::decryptId($id);
+
+        // load note
+        $note = Note::find($id);
+
+        // 1. hard delete
+        // $note->delete();
+
+        // 2. soft delete
+        $note->deleted_at = date('Y:m:d H:i:s');
+        $note->save();
+
+        return redirect()->route('home');
     }
 
 

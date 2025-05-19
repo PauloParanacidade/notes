@@ -37,7 +37,8 @@ Route::middleware([CheckIsLogged::class])->group(function(){
     Route::post('/editNoteSubmit', [MainController::class, 'editNoteSubmit'])->name('editNoteSubmit');
 
     // delete note
-    Route::get('/deleteNote/{id}', [MainController::class, 'deleteNote'])->name('delete');
+    Route::get('/deleteNote/{id}', [MainController::class, 'deleteNote'])->name('delete'); // essa rota irá apresentar a página que contém a pergunta: quer mesmo deletar?
+    Route::get('/deleteNoteConfirme{id}', [MainController::class, 'deleteNoteConfirm'])->name('deleteConfirm');
 
     Route::get('/logout',[AuthController::class, 'logout'])->name('logout');
 });
