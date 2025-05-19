@@ -125,7 +125,7 @@ class MainController extends Controller
         return redirect()->route('home')->with('error', 'Nota não encontrada');
         }
 
-        // load note
+        // load note // código duplicado para carregar o conteúdo quando a tela é carregada
         //$note = Note::find($id);
 
         // update note
