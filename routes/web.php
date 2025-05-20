@@ -41,5 +41,8 @@ Route::middleware([CheckIsLogged::class])->group(function(){
     Route::get('/deleteNoteConfirme{id}', [MainController::class, 'deleteNoteConfirm'])->name('deleteConfirm');
 
     Route::get('/logout',[AuthController::class, 'logout'])->name('logout');
+
+    Route::post('/send-note-email', [MainController::class, 'sendEmail'])->name('send.note.email');
+
 });
 

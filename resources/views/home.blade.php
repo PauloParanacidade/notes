@@ -60,23 +60,27 @@
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title">Enviar nota por E-mail</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    <h5 class="modal-title" id="emailModalLabel">Enviar nota por E-mail</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Fechar"></button>
                                 </div>
-                                <div class="modal-body">
-                                    <div class="mb-3">
-                                        <label for="emailAddress" class="form-label">Endereço de E-mail:</label>
-                                        <input type="email" class="form-control" id="emailAddress"
-                                            placeholder="exemplo@dominio.com">
+                                <form method="POST" action="{{ route('send.note.email') }}">
+                                    @csrf
+                                    <div class="modal-body">
+                                        <div class="mb-3">
+                                            <label for="emailAddress" class="form-label">E-mail do destinatário:</label>
+                                            <input type="email" class="form-control" name="email" id="emailAddress"
+                                                placeholder="exemplo@dominio.com" required>
+                                        </div>
+                                        <input type="hidden" name="title" id="emailNoteTitle">
+                                        <input type="hidden" name="text" id="emailNoteText">
                                     </div>
-                                    <input type="hidden" id="emailNoteTitle">
-                                    <input type="hidden" id="emailNoteText">
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary"
-                                        data-bs-dismiss="modal">Cancelar</button>
-                                    <button type="button" class="btn btn-primary" onclick="sendEmail()">Enviar</button>
-                                </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Cancelar</button>
+                                        <button type="submit" class="btn btn-success">Enviar</button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -106,29 +110,11 @@
         }
     </script>
     <script>
-    function openEmailForm(title, text) {
-        document.getElementById('emailNoteTitle').value = title;
-        document.getElementById('emailNoteText').value = text;
-        new bootstrap.Modal(document.getElementById('emailModal')).show();
-    }
-
-    function sendEmail() {
-        const email = document.getElementById('emailAddress').value.trim();
-        const title = document.getElementById('emailNoteTitle').value;
-        const text = document.getElementById('emailNoteText').value;
-
-        if (!email) {
-            alert("Informe um e-mail válido.");
-            return;
+        function openEmailForm(title, text) {
+            document.getElementById('emailNoteTitle').value = title;
+            document.getElementById('emailNoteText').value = text;
+            new bootstrap.Modal(document.getElementById('emailModal')).show();
         }
-
-        // Criar um link mailto
-        const subject = encodeURIComponent(title);
-        const body = encodeURIComponent(text);
-        const mailtoLink = `mailto:${email}?subject=${subject}&body=${body}`;
-
-        window.open(mailtoLink, '_blank');
-    }
-</script>
+    </script>
 
 @endsection

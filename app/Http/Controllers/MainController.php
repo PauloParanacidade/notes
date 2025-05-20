@@ -9,6 +9,7 @@ use Dotenv\Parser\Value;
 //use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
 //use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Mail;
 
 use function Illuminate\Database\Eloquent\get;
 
@@ -189,6 +190,22 @@ class MainController extends Controller
         // redirect to home
         return redirect()->route('home');
     }
+
+    public function sendEmail(Request $request)
+{
+    $request->validate([
+        'email' => 'required|email',
+        'title' => 'required|string',
+        'text' => 'required|string',
+    ]);
+
+    Mail::raw($request->text, function ($message) use ($request) {
+        $message->to($request->email)
+                ->subject($request->title);
+    });
+
+    return back()->with('success', 'Nota enviada por e-mail com sucesso!');
+}
 
 
 }
